@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roberto Satta</title>
+<meta name="description" content="Roberto Satta — food & drink photographer based in Sardinia, Italy, available worldwide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap">
+<meta property="og:title" content="Roberto Satta — Food &amp; Drink Photographer">
+<meta property="og:description" content="Cinematic photography for fine dining, cocktail bars and luxury hospitality. Sardinia, Italy · available worldwide.">
+<meta property="og:image" content="https://robertosatta.com/foto/cocktail-rosso.jpg">
+<meta property="og:url" content="https://robertosatta.com/">
+<link rel="icon" href="data:,">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #070707;
+  --fg: #d8d6d3;
+  --soft: #9a9793;
+  --line: #262524;
+  --bg-light: #f5f2ed;
+  --fg-dark: #1a1a1a;
+  --soft-dark: #6b6762;
+  --line-light: #d9d5cf;
+  --font: "Poppins", "Helvetica Neue", Arial, sans-serif;
+}
+html { background: var(--bg); }
+body {
+  font-family: var(--font);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  color: var(--fg);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.wrap { max-width: 1400px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-left, 0px)); }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px max(24px, env(safe-area-inset-left, 0px));
+  display: flex; justify-content: space-between; align-items: center;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.nav a { pointer-events: auto; }
+.nav-name {
+  font-weight: 600; font-size: 14px; letter-spacing: .08em;
+  text-transform: uppercase; color: #fff;
+}
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff; opacity: .7; transition: opacity .3s;
+}
+.nav-links a:hover { opacity: 1; }
+
+/* ── HERO ── */
+.hero {
+  height: 100vh; min-height: 600px;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 max(24px, env(safe-area-inset-left, 0px));
+  padding-bottom: clamp(40px, 8vh, 80px);
+  position: relative; overflow: hidden;
+  background: #070707;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url(foto/cocktail-rosso.jpg) center/cover no-repeat;
+  opacity: .35;
+  transform: scale(1.1);
+}
+.hero-title {
+  font-family: var(--font); font-weight: 800;
+  font-size: clamp(60px, 15vw, 220px);
+  text-transform: uppercase; letter-spacing: -.06em;
+  line-height: .88; color: #fff;
+  position: relative; z-index: 2;
+}
+.hero-title span { display: block; }
+.hero-sub {
+  font-size: clamp(14px, 1.6vw, 18px);
+  color: rgba(255,255,255,.6);
+  margin-top: 20px; position: relative; z-index: 2;
+  letter-spacing: .04em;
+}
+.hero-scroll {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.hero-scroll span {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
+.hero-scroll-line {
+  width: 1px; height: 40px; background: rgba(255,255,255,.2);
+  position: relative; overflow: hidden;
+}
+.hero-scroll-line::after {
+  content: ''; position: absolute; top: -100%; left: 0;
+  width: 1px; height: 100%; background: rgba(255,255,255,.7);
+  animation: scrollDown 2s ease-in-out infinite;
+}
+@keyframes scrollDown {
+  0% { top: -100%; }
+  50% { top: 100%; }
+  100% { top: 100%; }
+}
+
+/* ── SECTION INTRO (dark) ── */
+.section-intro {
+  padding: clamp(80px, 12vw, 160px) 0;
+  text-align: center;
+}
+.section-intro .label {
+  font-size: 12px; font-weight: 500; letter-spacing: .2em;
+  text-transform: uppercase; opacity: .5; margin-bottom: 24px;
+}
+.section-intro h2 {
+  font-weight: 800; font-size: clamp(36px, 7vw, 90px);
+  text-transform: uppercase; letter-spacing: -.04em;
+  line-height: .92;
+}
+.section-intro p {
+  max-width: 50ch; margin: 24px auto 0;
+  font-size: clamp(16px, 1.5vw, 20px);
+  opacity: .6; line-height: 1.5;
+}
+
+/* ── CINEMATIC PANELS (Apple-style pinned) ── */
+.panel-wrap {
+  position: relative;
+}
+.panel {
+  width: 100%; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.panel-img {
+  width: 85vw; max-width: 1200px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden; position: relative;
+}
+.panel-img img {
+  transform: scale(1.15);
+  will-change: transform;
+}
+.panel-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: clamp(20px, 4vw, 48px);
+  background: linear-gradient(transparent, rgba(0,0,0,.7));
+}
+.panel-caption h3 {
+  font-weight: 800; font-size: clamp(28px, 5vw, 64px);
+  text-transform: uppercase; letter-spacing: -.03em;
+  line-height: .95; color: #fff;
+}
+.panel-caption p {
+  color: rgba(255,255,255,.7);
+  font-size: clamp(14px, 1.3vw, 17px);
+  margin-top: 8px; max-width: 50ch;
+}
+
+/* ── GRID SECTION ── */
+.grid-section {
+  padding: clamp(60px, 8vw, 120px) 0;
+}
+.duo {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 2vw, 24px);
+  margin-bottom: clamp(12px, 2vw, 24px);
+}
+.trio {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(12px, 2vw, 24px);
+  margin-bottom: clamp(12px, 2vw, 24px);
+}
+.grid-img {
+  overflow: hidden; position: relative;
+  aspect-ratio: 3 / 4;
+}
+.grid-img.wide { aspect-ratio: 16 / 10; }
+.grid-img.square { aspect-ratio: 1 / 1; }
+.grid-img img { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+@media (hover: hover) { .grid-img:hover img { transform: scale(1.04); } }
+
+/* ── TRANSITION ZONE ── */
+.transition-zone {
+  padding: clamp(100px, 16vw, 200px) 0;
+  text-align: center;
+  position: relative;
+}
+.transition-zone h2 {
+  font-weight: 800; font-size: clamp(40px, 9vw, 120px);
+  text-transform: uppercase; letter-spacing: -.05em;
+  line-height: .88;
+}
+.transition-zone .sub {
+  font-size: clamp(15px, 1.5vw, 20px);
+  opacity: .5; margin-top: 20px;
+}
+
+/* ── LIGHT SECTION ── */
+.light-zone {
+  background: var(--bg-light);
+  color: var(--fg-dark);
+  transition: background .6s, color .6s;
+}
+.light-zone .section-intro { color: var(--fg-dark); }
+.light-zone .section-intro .label { color: var(--soft-dark); }
+.light-zone .section-intro p { color: var(--soft-dark); }
+.light-zone .panel-caption { background: linear-gradient(transparent, rgba(255,255,255,.85)); }
+.light-zone .panel-caption h3 { color: var(--fg-dark); }
+.light-zone .panel-caption p { color: var(--soft-dark); }
+
+/* ── COLLABORATIONS (light) ── */
+.collabs {
+  padding: clamp(60px, 8vw, 120px) 0;
+}
+.collabs h2 {
+  font-weight: 800; font-size: clamp(36px, 6vw, 80px);
+  text-transform: uppercase; letter-spacing: -.04em;
+  line-height: .92; margin-bottom: clamp(32px, 5vw, 64px);
+}
+.collab-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0 clamp(24px, 3vw, 48px);
+}
+.collab-group h3 {
+  font-size: 11px; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--soft-dark);
+  padding-bottom: 12px; border-bottom: 1px solid var(--line-light);
+  margin-bottom: 0;
+}
+.collab-item {
+  padding: 16px 0; border-bottom: 1px solid var(--line-light);
+}
+.collab-name {
+  font-weight: 600; font-size: 16px; line-height: 1.3; color: var(--fg-dark);
+}
+.collab-name span { font-weight: 300; color: var(--soft-dark); }
+.collab-what {
+  font-size: 13px; color: var(--soft-dark); margin-top: 2px;
+}
+
+/* ── ABOUT (light) ── */
+.about-section {
+  padding: clamp(60px, 8vw, 120px) 0;
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 100px); align-items: start;
+}
+.about-portrait {
+  aspect-ratio: 4 / 5; overflow: hidden; max-width: 480px;
+}
+.about-text h2 {
+  font-weight: 800; font-size: clamp(44px, 7vw, 100px);
+  text-transform: uppercase; letter-spacing: -.04em;
+  line-height: .9; margin-bottom: 28px; color: var(--fg-dark);
+}
+.about-text p {
+  max-width: 55ch; margin-bottom: 16px;
+  color: var(--soft-dark); line-height: 1.65;
+}
+.services-list {
+  margin-top: 36px; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 0 32px;
+  list-style: none;
+}
+.services-list li {
+  padding: 12px 0; border-bottom: 1px solid var(--line-light);
+  font-size: 15px; color: var(--fg-dark);
+}
+
+/* ── CONTACT (back to dark) ── */
+.contact-section {
+  background: var(--bg); color: var(--fg);
+  padding: clamp(80px, 12vw, 160px) 0 clamp(40px, 6vw, 80px);
+}
+.contact-section h2 {
+  font-weight: 800; font-size: clamp(50px, 12vw, 180px);
+  text-transform: uppercase; letter-spacing: -.05em;
+  line-height: .88;
+}
+.contact-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: clamp(40px, 6vw, 80px);
+}
+.contact-item { display: flex; flex-direction: column; gap: 8px; }
+.contact-label {
+  font-size: 11px; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--soft);
+}
+.contact-value {
+  font-size: clamp(17px, 1.8vw, 22px); font-weight: 400;
+  overflow-wrap: anywhere;
+}
+.copy-btn {
+  align-self: flex-start; font: inherit; font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--fg); background: transparent;
+  border: 1px solid var(--line); padding: 7px 14px;
+  cursor: pointer; transition: border-color .3s;
+}
+.copy-btn:hover { border-color: var(--fg); }
+.contact-note {
+  margin-top: 48px; color: var(--soft); max-width: 55ch;
+  font-size: 15px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg); color: var(--soft);
+  padding: 24px max(24px, env(safe-area-inset-left, 0px)) 36px;
+  font-size: 13px; display: flex;
+  justify-content: space-between; gap: 12px;
+  border-top: 1px solid var(--line);
+}
+footer a { opacity: .7; transition: opacity .3s; }
+footer a:hover { opacity: 1; }
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  will-change: opacity, transform;
+}
+.reveal-left {
+  opacity: 0; transform: translateX(-40px);
+  will-change: opacity, transform;
+}
+.reveal-right {
+  opacity: 0; transform: translateX(40px);
+  will-change: opacity, transform;
+}
+.reveal-scale {
+  opacity: 0; transform: scale(.92);
+  will-change: opacity, transform;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .collab-grid { grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .about-section { grid-template-columns: 1fr; }
+  .about-portrait { max-width: 320px; }
+}
+@media (max-width: 680px) {
+  .duo { grid-template-columns: 1fr; }
+  .trio { grid-template-columns: 1fr 1fr; }
+  .trio .grid-img:first-child { grid-column: span 2; aspect-ratio: 16/10; }
+  .collab-grid { grid-template-columns: 1fr; }
+  .contact-row { grid-template-columns: 1fr; }
+  .panel-img { width: 95vw; }
+  .nav-links { display: none; }
+}
+
+/* ── PREFERS REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1 !important; transform: none !important;
+  }
+  .hero-bg { transform: none !important; }
+  .hero-scroll-line::after { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#top" class="nav-name">Roberto Satta</a>
+  <div class="nav-links">
+    <a href="#artificial">Work</a>
+    <a href="#natural">Natural Light</a>
+    <a href="#collaborations">Collaborations</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <h1 class="hero-title">
+    <span>Roberto</span>
+    <span>Satta.</span>
+  </h1>
+  <p class="hero-sub">Food &amp; Drink Photographer · Sardinia, Italy · Available worldwide</p>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     PART 1: ARTIFICIAL LIGHT (dark)
+     ═══════════════════════════════════════════ -->
+
+<div id="artificial">
+  <div class="wrap">
+    <div class="section-intro reveal">
+      <p class="label">Artificial Light</p>
+      <h2>Where darkness<br>tells the story</h2>
+      <p>Controlled light, chiaroscuro and cinematic mood. Every shadow is a choice.</p>
+    </div>
+  </div>
+
+  <!-- Geranium panel -->
+  <div class="wrap">
+    <div class="panel reveal-scale">
+      <div class="panel-img">
+        <img src="foto/geranium-contagocce.jpg" alt="A dropper adding drops to a foamed juice in a coupe">
+        <div class="panel-caption">
+          <h3>Geranium</h3>
+          <p>Copenhagen · 3 Michelin stars. Signature juices and contemporary chiaroscuro. Concept and juices by Giulia Caffiero.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Geranium grid -->
+  <div class="wrap grid-section">
+    <div class="duo">
+      <div class="grid-img reveal-left"><img src="foto/geranium-vino.jpg" alt="Deep red juice in a glass seen from above"></div>
+      <div class="grid-img reveal-right"><img src="foto/geranium-coppa.jpg" alt="Foamed juice with herb leaf on stemmed glass"></div>
+    </div>
+  </div>
+
+  <!-- Krug panel -->
+  <div class="wrap">
+    <div class="panel reveal-scale">
+      <div class="panel-img">
+        <img src="foto/krug.jpg" alt="Krug bottle with two glasses and a lobster dish">
+        <div class="panel-caption">
+          <h3>Krug × Fuoco Sacro</h3>
+          <p>Sardinia · 1 Michelin star. Editorial photography for Krug. Featured in the official Fuoco Sacro book, Enrico Bartolini Collection.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark mood grid -->
+  <div class="wrap grid-section">
+    <div class="trio">
+      <div class="grid-img reveal"><img src="foto/drink-ritratto.jpg" alt="Woman holding a red drink, motion-blurred in a dark bar"></div>
+      <div class="grid-img reveal"><img src="foto/drink-verde.jpg" alt="Green cocktail lit in darkness"></div>
+      <div class="grid-img reveal"><img src="foto/wild-turkey.jpg" alt="Wild Turkey Rye bottle and cocktail"></div>
+    </div>
+    <div class="duo">
+      <div class="grid-img wide reveal-left"><img src="foto/krug-rose.jpg" alt="Krug Rosé with plated dishes under pendant lights"></div>
+      <div class="grid-img wide reveal-right"><img src="foto/drink-ambra.jpg" alt="Amber cocktail with green leaf on ice"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TRANSITION
+     ═══════════════════════════════════════════ -->
+<div class="transition-zone" id="transition-zone">
+  <div class="wrap">
+    <h2 class="reveal">Then the<br>light comes in</h2>
+    <p class="sub reveal">Same eye. Different atmosphere.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PART 2: NATURAL LIGHT (light)
+     ═══════════════════════════════════════════ -->
+<div class="light-zone" id="natural">
+  <div class="wrap">
+    <div class="section-intro reveal">
+      <p class="label">Natural Light</p>
+      <h2>Where the place<br>speaks for itself</h2>
+      <p>Morning kitchens, daylit tables, raw textures. The story is already there.</p>
+    </div>
+  </div>
+
+  <!-- Slurp panel -->
+  <div class="wrap">
+    <div class="panel reveal-scale">
+      <div class="panel-img">
+        <img src="foto/slurp-pasta.jpg" alt="Fresh noodles hanging from a machine under light">
+        <div class="panel-caption">
+          <h3>Slurp</h3>
+          <p>Copenhagen. Natural-light food photography for Nordic casual fine dining.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Natural light grid -->
+  <div class="wrap grid-section">
+    <div class="duo">
+      <div class="grid-img reveal-left"><img src="foto/slurp-matasse.jpg" alt="Nests of fresh noodles"></div>
+      <div class="grid-img reveal-right"><img src="foto/piatto-blu.jpg" alt="Raw fish dish in blue bowl on dark wood"></div>
+    </div>
+    <div class="trio">
+      <div class="grid-img reveal"><img src="foto/salsa.jpg" alt="Sauce being poured into a white bowl"></div>
+      <div class="grid-img reveal"><img src="foto/cucina-mani.jpg" alt="Chef's hands cutting green beans"></div>
+      <div class="grid-img reveal"><img src="foto/piatto-legno.jpg" alt="Grilled fish on wooden board"></div>
+    </div>
+  </div>
+
+  <!-- Personal work -->
+  <div class="wrap grid-section">
+    <div class="section-intro reveal" style="padding-top:0">
+      <p class="label">Personal Work</p>
+    </div>
+    <div class="trio">
+      <div class="grid-img reveal"><img src="foto/uva.jpg" alt="Red grapes dripping juice against dark background"></div>
+      <div class="grid-img reveal"><img src="foto/spaghetti.jpg" alt="Dry spaghetti fanned from above"></div>
+      <div class="grid-img reveal"><img src="foto/gelato.jpg" alt="Chocolate ice cream bar against black"></div>
+    </div>
+  </div>
+
+  <!-- Collaborations -->
+  <div class="wrap collabs" id="collaborations">
+    <h2 class="reveal">Selected<br>collaborations</h2>
+    <div class="collab-grid">
+      <div class="collab-group reveal">
+        <h3>Fine dining &amp; Michelin</h3>
+        <div class="collab-item"><span class="collab-name">Geranium <span>· Copenhagen, 3★</span></span><span class="collab-what">Signature juice photography and chiaroscuro work.</span></div>
+        <div class="collab-item"><span class="collab-name">Krug × Fuoco Sacro <span>· Sardinia, 1★</span></span><span class="collab-what">Editorial photography for Krug.</span></div>
+        <div class="collab-item"><span class="collab-name">Fuoco Sacro Book <span>· Bartolini Collection</span></span><span class="collab-what">Photography in the official publication.</span></div>
+        <h3 style="margin-top:28px">Hospitality</h3>
+        <div class="collab-item"><span class="collab-name">The Connaught <span>· London</span></span><span class="collab-what">Luxury hospitality.</span></div>
+        <div class="collab-item"><span class="collab-name">Soho House <span>· Berlin</span></span><span class="collab-what">Hospitality.</span></div>
+        <div class="collab-item"><span class="collab-name">Le Dune Piscinas <span>· Sardinia, 5★L</span></span><span class="collab-what">Luxury hospitality and landscape storytelling.</span></div>
+        <div class="collab-item"><span class="collab-name">Cala Sinzias Resort <span>· Sardinia, 4★</span></span><span class="collab-what">Resort and F&amp;B photography.</span></div>
+      </div>
+      <div class="collab-group reveal">
+        <h3>International</h3>
+        <div class="collab-item"><span class="collab-name">Cecconi's <span>· Berlin</span></span><span class="collab-what">Creative food project with the head chef.</span></div>
+        <div class="collab-item"><span class="collab-name">Slurp <span>· Copenhagen</span></span><span class="collab-what">Natural-light Nordic casual fine dining.</span></div>
+        <div class="collab-item"><span class="collab-name">Reingold Bar <span>· Berlin</span></span><span class="collab-what">Cocktail identity and nightlife.</span></div>
+        <div class="collab-item"><span class="collab-name">The Jones Family <span>· London</span></span><span class="collab-what">Food and brand storytelling.</span></div>
+        <div class="collab-item"><span class="collab-name">Belgravia Magazine <span>· London</span></span><span class="collab-what">Editorial contribution.</span></div>
+        <div class="collab-item"><span class="collab-name">Evening Standard <span>· London</span></span><span class="collab-what">Photography in multiple articles.</span></div>
+        <div class="collab-item"><span class="collab-name">Nat Geo Traveller <span>· London</span></span><span class="collab-what">Food Festival coverage.</span></div>
+      </div>
+      <div class="collab-group reveal">
+        <h3>Bars &amp; mixology</h3>
+        <div class="collab-item"><span class="collab-name">Sensus <span>· Cagliari</span></span><span class="collab-what">Cocktail identity and visual direction.</span></div>
+        <div class="collab-item"><span class="collab-name">Gemini American Bar <span>· Cagliari</span></span><span class="collab-what">Creative mixology photography.</span></div>
+        <div class="collab-item"><span class="collab-name">Matilde Cocktail Bar <span>· Cagliari</span></span><span class="collab-what">Drink identity and bar visuals.</span></div>
+        <h3 style="margin-top:28px">Special projects</h3>
+        <div class="collab-item"><span class="collab-name">Sardinia Cocktail Week <span>· Founder</span></span><span class="collab-what">Visual identity and annual event direction.</span></div>
+        <div class="collab-item"><span class="collab-name">Food Identity <span>· Fine-art, 2025–2026</span></span><span class="collab-what">Personal artistic food photography series.</span></div>
+        <div class="collab-item"><span class="collab-name">World Food Photography Awards</span><span class="collab-what">Shortlisted 2025 and 2026.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="wrap" id="about">
+    <div class="about-section">
+      <div class="about-portrait reveal-left">
+        <img src="foto/roberto.jpg" alt="Black and white portrait of Roberto Satta">
+      </div>
+      <div class="about-text reveal-right">
+        <h2>I'm<br>Roberto</h2>
+        <p>Before becoming a full-time photographer, I spent years working inside restaurants, bars and hotels. I understand the rhythm of a kitchen, the discipline behind every dish and the silence before service, so I work quickly and quietly around your team.</p>
+        <p>My style blends natural and artificial light, raw elegance and a strong sense of place. From Michelin-level kitchens to creative street food concepts, I build visual identities that connect venues and brands to their audience. I'm based in Sardinia and I travel for commissions across Europe and worldwide.</p>
+        <ul class="services-list">
+          <li>Fine dining &amp; gastronomy</li>
+          <li>Cocktail &amp; mixology</li>
+          <li>Hotels &amp; luxury hospitality</li>
+          <li>Restaurant &amp; kitchen reportage</li>
+          <li>F&amp;B product &amp; still life</li>
+          <li>Openings &amp; rebrandings</li>
+          <li>Art direction &amp; styling</li>
+          <li>Editorial &amp; social campaigns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CONTACT (back to dark)
+     ═══════════════════════════════════════════ -->
+<div class="contact-section" id="contact">
+  <div class="wrap">
+    <h2 class="reveal">Let's talk.</h2>
+    <div class="contact-row">
+      <div class="contact-item reveal">
+        <span class="contact-label">Email</span>
+        <span class="contact-value" id="email-val">robertosatta01@gmail.com</span>
+        <button class="copy-btn" type="button" data-copy="email-val">Copy email</button>
+      </div>
+      <div class="contact-item reveal">
+        <span class="contact-label">Instagram</span>
+        <a class="contact-value" href="https://www.instagram.com/robertosatta_/" target="_blank" rel="noopener">@robertosatta_</a>
+      </div>
+      <div class="contact-item reveal">
+        <span class="contact-label">Based in</span>
+        <span class="contact-value">Cagliari, Sardinia, Italy</span>
+        <span class="contact-label" style="margin-top:4px">Available worldwide</span>
+      </div>
+    </div>
+    <p class="contact-note reveal">If you're looking for a visual identity built on atmosphere, storytelling and refined food imagery, I'd be glad to hear from you.</p>
+  </div>
+</div>
+
+<footer>
+  <span>© Roberto Satta</span>
+  <a href="#top">Back to top</a>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero parallax
+gsap.to('.hero-bg', {
+  y: '30%', scale: 1.2, ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+});
+
+// Hero title fade
+gsap.to('.hero-title', {
+  y: -60, opacity: 0, ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: '60% top', end: 'bottom top', scrub: true }
+});
+
+// Reveal animations
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+  });
+});
+gsap.utils.toArray('.reveal-left').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+  });
+});
+gsap.utils.toArray('.reveal-right').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+  });
+});
+gsap.utils.toArray('.reveal-scale').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+  });
+});
+
+// Image parallax inside panels
+gsap.utils.toArray('.panel-img img').forEach(img => {
+  gsap.to(img, {
+    scale: 1, y: '-8%', ease: 'none',
+    scrollTrigger: { trigger: img.closest('.panel'), start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+});
+
+// THE TRANSITION: dark → light
+// Background shifts from #070707 to #f5f2ed
+ScrollTrigger.create({
+  trigger: '#transition-zone',
+  start: 'top 80%',
+  end: 'bottom 20%',
+  scrub: true,
+  onUpdate: self => {
+    const p = self.progress;
+    const r = Math.round(7 + (245 - 7) * p);
+    const g = Math.round(7 + (242 - 7) * p);
+    const b = Math.round(7 + (237 - 7) * p);
+    document.getElementById('transition-zone').style.background =
+      `rgb(${r},${g},${b})`;
+    // text color shifts too
+    const tr = Math.round(216 + (26 - 216) * p);
+    const tg = Math.round(214 + (26 - 214) * p);
+    const tb = Math.round(211 + (26 - 211) * p);
+    document.getElementById('transition-zone').style.color =
+      `rgb(${tr},${tg},${tb})`;
+  }
+});
+
+// Copy email
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const el = document.getElementById(btn.dataset.copy);
+    if (!el) return;
+    const text = el.textContent.trim();
+    const done = () => { btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy email'; }, 2000); };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else {
+      const r = document.createRange(); r.selectNodeContents(el);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      done();
+    }
+  });
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+
+</body>
+</html>
