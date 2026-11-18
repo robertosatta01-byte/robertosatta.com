@@ -39,7 +39,7 @@ body {
   overflow-x: hidden;
 }
 a { color: inherit; text-decoration: none; }
-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+img { display: block; width: 100%; height: auto; }
 .wrap { max-width: 1400px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-left, 0px)); }
 
 /* ── NAV ── */
@@ -146,11 +146,10 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 .panel-img {
   width: 85vw; max-width: 1200px;
-  aspect-ratio: 16 / 10;
   overflow: hidden; position: relative;
 }
 .panel-img img {
-  transform: scale(1.15);
+  width: 100%; height: auto;
   will-change: transform;
 }
 .panel-caption {
@@ -177,19 +176,18 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   display: grid; grid-template-columns: 1fr 1fr;
   gap: clamp(12px, 2vw, 24px);
   margin-bottom: clamp(12px, 2vw, 24px);
+  align-items: start;
 }
 .trio {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: clamp(12px, 2vw, 24px);
   margin-bottom: clamp(12px, 2vw, 24px);
+  align-items: start;
 }
 .grid-img {
   overflow: hidden; position: relative;
-  aspect-ratio: 3 / 4;
 }
-.grid-img.wide { aspect-ratio: 16 / 10; }
-.grid-img.square { aspect-ratio: 1 / 1; }
-.grid-img img { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.grid-img img { width: 100%; height: auto; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
 @media (hover: hover) { .grid-img:hover img { transform: scale(1.04); } }
 
 /* ── TRANSITION ZONE ── */
@@ -352,8 +350,7 @@ footer a:hover { opacity: 1; }
 }
 @media (max-width: 680px) {
   .duo { grid-template-columns: 1fr; }
-  .trio { grid-template-columns: 1fr 1fr; }
-  .trio .grid-img:first-child { grid-column: span 2; aspect-ratio: 16/10; }
+  .trio { grid-template-columns: 1fr; }
   .collab-grid { grid-template-columns: 1fr; }
   .contact-row { grid-template-columns: 1fr; }
   .panel-img { width: 95vw; }
@@ -454,8 +451,8 @@ footer a:hover { opacity: 1; }
       <div class="grid-img reveal"><img src="foto/wild-turkey.jpg" alt="Wild Turkey Rye bottle and cocktail"></div>
     </div>
     <div class="duo">
-      <div class="grid-img wide reveal-left"><img src="foto/krug-rose.jpg" alt="Krug Rosé with plated dishes under pendant lights"></div>
-      <div class="grid-img wide reveal-right"><img src="foto/drink-ambra.jpg" alt="Amber cocktail with green leaf on ice"></div>
+      <div class="grid-img reveal-left"><img src="foto/krug-rose.jpg" alt="Krug Rosé with plated dishes under pendant lights"></div>
+      <div class="grid-img reveal-right"><img src="foto/drink-ambra.jpg" alt="Amber cocktail with green leaf on ice"></div>
     </div>
   </div>
 </div>
@@ -655,10 +652,10 @@ gsap.utils.toArray('.reveal-scale').forEach(el => {
   });
 });
 
-// Image parallax inside panels
+// Gentle parallax on panel images
 gsap.utils.toArray('.panel-img img').forEach(img => {
-  gsap.to(img, {
-    scale: 1, y: '-8%', ease: 'none',
+  gsap.fromTo(img, { y: '4%' }, {
+    y: '-4%', ease: 'none',
     scrollTrigger: { trigger: img.closest('.panel'), start: 'top bottom', end: 'bottom top', scrub: true }
   });
 });
