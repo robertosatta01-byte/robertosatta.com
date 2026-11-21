@@ -431,7 +431,7 @@
   // Work gallery: to add a photo, put the file in foto/ and add one line here (file, caption, description, 'dark' or 'light').
   const WORK = [
     ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table', 'dark'],
-    ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait in a dark bar', 'dark'],
+    ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait in a dark bar', 'light'],
     ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood', 'dark'],
     ['drink-verde.jpg', 'Mixology', 'Green cocktail lit in darkness on a black tray', 'dark'],
     ['wild-turkey.jpg', 'Spirits', 'Wild Turkey Rye bottle and a cocktail with a leaf on a black table', 'dark'],
@@ -454,8 +454,8 @@
 
   document.querySelectorAll('.project .tile, .row-2, .row-3').forEach((el) => el.classList.add('reveal'));
 
-  // Until there are natural-light photos, keep the dawn and the light section hidden
-  if (!document.querySelector('#work-light .tile')) { document.getElementById('dawn').hidden = true; document.getElementById('natural').hidden = true; }
+  // The dawn and the light section appear once there are at least 3 natural-light photos
+  if (WORK.filter((w) => w[3] === 'light').length < 3) { document.getElementById('dawn').hidden = true; document.getElementById('natural').hidden = true; }
 
   // Light shift: dark until the dawn, light through the natural section, dark again at the contacts
   const DARK = { ink: [7, 7, 7], wall: [15, 15, 15], type: [216, 214, 211], soft: [154, 151, 147], line: [38, 37, 36] };
