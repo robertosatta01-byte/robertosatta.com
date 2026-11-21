@@ -44,7 +44,7 @@
   .hero-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .hero-top .label { color: rgba(233,231,228,.82); }
   .hero-name { font-size: clamp(52px, 11vw, 168px); color: #eeece9; }
-  .hero-name span { display: block; }
+  .hero-name > span { display: block; }
   .hero-bottom { display: grid; grid-template-columns: 1fr auto; gap: 20px 40px; align-items: end; }
   .lede { font-size: clamp(16px, 1.6vw, 21px); line-height: 1.45; margin: 18px 0 0; max-width: 34ch; color: #e9e7e4; text-wrap: balance; }
   .hero-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
@@ -104,6 +104,33 @@
   .dawn h2 { position: relative; font-size: clamp(48px, 11vw, 160px); }
   .dawn p { position: relative; margin: 0; color: var(--soft); font-size: clamp(16px, 1.6vw, 20px); }
   #natural { border-top: 0; }
+
+
+  /* Opening: the room is dark, then the light comes on and the name writes itself */
+  .js .hero .slides { opacity: 0; transition: opacity 2.2s ease .15s; }
+  .js .hero.lit .slides { opacity: 1; }
+  .ch { display: inline-block; }
+  .js .hero .ch { opacity: 0; transform: translateY(.4em); transition: opacity .9s ease, transform 1.2s var(--ease); transition-delay: calc(.8s + var(--i) * 55ms); }
+  .js .hero.lit .ch { opacity: 1; transform: none; }
+  .js .hero .hero-top, .js .hero .lede, .js .hero .hero-meta { opacity: 0; transition: opacity 1.2s ease 1.9s; }
+  .js .hero.lit .hero-top, .js .hero.lit .lede, .js .hero.lit .hero-meta { opacity: 1; }
+
+  /* Spotlight: the photograph is revealed where the light falls */
+  .spot { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 1.6s ease 1.2s;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 42%), rgba(0,0,0,0) 0, rgba(0,0,0,0) var(--r0, 14vmax), rgba(0,0,0,.62) var(--r1, 40vmax)); }
+  .hero.lit .spot { opacity: 1; }
+  .hero-ui { z-index: 3; }
+
+  /* Opening shots: the picture grows to full screen as you scroll */
+  html, body { overflow-x: clip; }
+  .expand { position: relative; height: 175svh; margin: clamp(10px, 2vw, 24px) calc(50% - 50vw) 0; }
+  .expand-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .expand-frame { position: absolute; inset: 0; aspect-ratio: auto; margin: 0; background: transparent; clip-path: inset(var(--iy, 16%) var(--ix, 34%)); }
+  .expand-frame img { transform: scale(var(--sc, 1.12)); transition: none; }
+  @media (hover: hover) { .expand-frame:hover img { transform: scale(var(--sc, 1.12)); } }
+  .row-1 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(10px, 1.4vw, 18px); }
+  .row-1 .tile { grid-column: 2; }
+  @media (max-width: 560px) { .row-1 { grid-template-columns: 1fr; } .row-1 .tile { grid-column: 1; } }
 
   /* Reveal on scroll */
   .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
@@ -200,6 +227,9 @@
     .marquee { animation: none; flex-wrap: wrap; width: auto; }
     .marquee ul + ul { display: none; }
     .js .reveal { opacity: 1; transform: none; transition: none; }
+    .js .hero .slides, .js .hero .ch, .js .hero .hero-top, .js .hero .lede, .js .hero .hero-meta, .spot { transition: none; }
+    .expand { height: auto; margin-inline: 0; } .expand-pin { position: static; height: auto; }
+    .expand-frame { position: relative; aspect-ratio: 4 / 5; clip-path: none; } .expand-frame img { transform: none; }
   }
 </style>
 <meta property="og:title" content="Roberto Satta — Food &amp; Drink Photographer">
@@ -217,6 +247,7 @@
     <div class="slide" data-cap="Krug × Fuoco Sacro · Sardinia"><img loading="lazy" src="foto/krug-rose.jpg" alt=""></div>
     <div class="slide" data-cap="Slurp · Copenhagen"><img loading="lazy" src="foto/slurp-pasta.jpg" alt=""></div>
   </div>
+  <div class="spot" aria-hidden="true"></div>
   <div class="hero-ui">
     <div class="hero-top">
       <span class="label">Food &amp; Drink Photographer</span>
@@ -224,7 +255,7 @@
     </div>
     <div class="hero-bottom">
       <div>
-        <h1 class="display hero-name"><span>Roberto</span><span>Satta.</span></h1>
+        <h1 class="display hero-name" aria-label="Roberto Satta"><span>Roberto</span><span>Satta.</span></h1>
         <p class="lede">Cinematic photography for fine dining, cocktail bars and luxury hospitality. Every image is built around the identity of the place.</p>
       </div>
       <div class="hero-meta">
@@ -266,8 +297,8 @@
         <h3>Geranium</h3>
         <p><b>Copenhagen · 3 Michelin stars.</b> Fine-dining beverage photography inside Geranium's environment: signature juices and contemporary chiaroscuro. Concept and juices by Giulia Caffiero.</p>
       </div>
-      <div class="row-3">
-        <figure class="tile"><img loading="lazy" src="foto/geranium-contagocce.jpg" alt="A dropper adding drops to a foamed juice in a coupe"></figure>
+      <div class="expand"><div class="expand-pin"><figure class="tile expand-frame"><img src="foto/geranium-contagocce.jpg" alt="A dropper adding drops to a foamed juice in a coupe" loading="lazy"></figure></div></div>
+      <div class="row-2">
         <figure class="tile"><img loading="lazy" src="foto/geranium-vino.jpg" alt="Deep red juice in a glass seen from above, half in light"></figure>
         <figure class="tile"><img loading="lazy" src="foto/geranium-coppa.jpg" alt="Foamed juice with a herb leaf on a stemmed glass under a spotlight"></figure>
       </div>
@@ -278,10 +309,18 @@
         <h3>Krug × Fuoco Sacro</h3>
         <p><b>Sardinia · 1 Michelin star.</b> Editorial photography for Krug, created at Fuoco Sacro.</p>
       </div>
-      <div class="row-2">
+      <div class="expand"><div class="expand-pin"><figure class="tile expand-frame"><img src="foto/krug-rose.jpg" alt="Krug Rosé bottle with glasses and plated dishes under glass pendant lights" loading="lazy"></figure></div></div>
+      <div class="row-1">
         <figure class="tile"><img loading="lazy" src="foto/krug.jpg" alt="Krug bottle with two glasses and a lobster dish against a textured wall"></figure>
-        <figure class="tile"><img loading="lazy" src="foto/krug-rose.jpg" alt="Krug Rosé bottle with glasses and plated dishes under glass pendant lights"></figure>
       </div>
+    </div>
+
+    <div class="project" id="twice-shy">
+      <div class="project-text">
+        <h3>Twice Shy</h3>
+        <p><b>London.</b> Cocktail bar photography: the bartenders, the bar and the movement of service.</p>
+      </div>
+      <div class="expand"><div class="expand-pin"><figure class="tile expand-frame"><img src="foto/twice-shy.jpg" alt="Bartender stirring a cocktail behind the bar, light trails around him" loading="lazy"></figure></div></div>
     </div>
 
     <div class="project" id="slurp">
@@ -466,7 +505,6 @@
 <script>
   // Work gallery: to add a photo, put the file in foto/ and add one line here (file, caption, description, 'dark' or 'light').
   const WORK = [
-    ['twice-shy.jpg', 'Twice Shy · London', 'Bartender stirring a cocktail behind the bar, light trails around him', 'dark'],
     ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table', 'dark'],
     ['sensus.jpg', 'Sensus · Cagliari', 'Red drink in a tall glass, lit from the side against black', 'dark'],
     ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood', 'dark'],
@@ -545,6 +583,46 @@
   }
   function restart() { clearInterval(timer); if (!still) timer = setInterval(() => show(cur + 1), 6000); }
   restart();
+
+  // Opening sequence
+  const heroEl = document.getElementById('top');
+  let n = 0;
+  heroEl.querySelectorAll('.hero-name span').forEach((w) => {
+    const t = w.textContent; w.textContent = '';
+    [...t].forEach((c) => { const e = document.createElement('span'); e.className = 'ch'; e.style.setProperty('--i', n++); e.textContent = c; e.setAttribute('aria-hidden', 'true'); w.append(e); });
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => heroEl.classList.add('lit')));
+
+  // Spotlight: follows the mouse on a computer, drifts on its own on a phone
+  const spot = heroEl.querySelector('.spot');
+  const fine = matchMedia('(pointer: fine)').matches;
+  let tx = 50, ty = 42, cx = 50, cy = 42, heroOn = true, t0 = performance.now(), spotRaf = 0;
+  if (fine) heroEl.addEventListener('pointermove', (e) => { const r = heroEl.getBoundingClientRect(); tx = (e.clientX - r.left) / r.width * 100; ty = (e.clientY - r.top) / r.height * 100; });
+  function spotLoop(now) {
+    if (!fine) { const k = (now - t0) / 1000; tx = 50 + Math.sin(k * 0.35) * 26; ty = 44 + Math.sin(k * 0.23 + 1) * 16; }
+    cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+    spot.style.setProperty('--mx', cx.toFixed(2) + '%'); spot.style.setProperty('--my', cy.toFixed(2) + '%');
+    spotRaf = heroOn ? requestAnimationFrame(spotLoop) : 0;
+  }
+  if (!still) {
+    new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; if (heroOn && !spotRaf) spotRaf = requestAnimationFrame(spotLoop); }).observe(heroEl);
+  } else { spot.style.display = 'none'; }
+
+  // Opening shots: grow from a framed picture to full screen while scrolling
+  const expands = [...document.querySelectorAll('.expand')];
+  function grow() {
+    const vh = innerHeight, narrow = innerWidth < 700;
+    expands.forEach((ex) => {
+      const r = ex.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      const p = smooth(clamp(-r.top / (r.height - vh) * 1.25));
+      const f = ex.querySelector('.expand-frame');
+      f.style.setProperty('--ix', ((narrow ? 12 : 34) * (1 - p)).toFixed(2) + '%');
+      f.style.setProperty('--iy', ((narrow ? 16 : 12) * (1 - p)).toFixed(2) + '%');
+      f.style.setProperty('--sc', (1.12 - 0.12 * p).toFixed(3));
+    });
+  }
+  if (!still) { addEventListener('scroll', () => requestAnimationFrame(grow), { passive: true }); addEventListener('resize', grow); grow(); }
 
   // Reveal on scroll
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
