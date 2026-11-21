@@ -145,6 +145,19 @@
   .contact-value { font-size: clamp(17px, 1.8vw, 22px); font-weight: 400; overflow-wrap: anywhere; user-select: all; }
   .copy { align-self: flex-start; font: inherit; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--type); background: transparent; border: 1px solid var(--line); padding: 7px 12px; cursor: pointer; }
   .copy:hover, .copy:focus-visible { border-color: var(--type); outline: none; }
+  .enquiry { margin-top: clamp(40px, 6vw, 72px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 18px; max-width: 860px; }
+  .enquiry-intro { margin: 0; font-size: clamp(17px, 1.8vw, 22px); }
+  .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+  .enquiry label { display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+  .enquiry input, .enquiry select, .enquiry textarea { font: inherit; font-size: 16px; letter-spacing: 0; text-transform: none; font-weight: 300; color: var(--type); background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 10px 0; width: 100%; }
+  .enquiry select option { color: #111; }
+  .enquiry textarea { resize: vertical; border: 1px solid var(--line); padding: 12px; }
+  .enquiry input:focus, .enquiry select:focus, .enquiry textarea:focus { outline: none; border-color: var(--type); }
+  .enquiry .bad { border-color: #c46666; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .f-foot { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .f-status { font-size: 14px; color: var(--soft); }
+  @media (max-width: 560px) { .f-grid { grid-template-columns: 1fr; } }
   .contact-note { margin-top: 40px; color: var(--soft); max-width: 60ch; }
   footer { padding-block: 28px 40px; border-top: 1px solid var(--line); color: var(--soft); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   a:focus-visible, button:focus-visible { outline: 1px solid var(--type); outline-offset: 3px; }
@@ -407,6 +420,29 @@
       <div class="contact-item"><span class="label">Instagram</span><a class="contact-value" href="https://www.instagram.com/robertosatta_/" target="_blank" rel="noopener">@robertosatta_</a></div>
       <div class="contact-item"><span class="label">Based in</span><span class="contact-value">Cagliari, Sardinia, Italy</span><span class="label">Available worldwide</span></div>
     </div>
+    <form class="enquiry" id="enquiry" novalidate>
+      <p class="enquiry-intro">Tell me about your project. I usually reply within one working day.</p>
+      <div class="f-grid">
+        <label>Name<input name="name" autocomplete="name" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Venue or company<input name="company" autocomplete="organization"></label>
+        <label>City<input name="city"></label>
+        <label>Type of project
+          <select name="type">
+            <option value="">Choose…</option>
+            <option>Hotel</option><option>Restaurant</option><option>Cocktail bar</option>
+            <option>Drinks or food brand</option><option>PR or creative agency</option><option>Editorial</option><option>Other</option>
+          </select>
+        </label>
+        <label>When<input name="when" placeholder="e.g. March 2027"></label>
+      </div>
+      <label>Message<textarea name="message" rows="5" required></textarea></label>
+      <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="f-foot">
+        <button class="btn" type="submit">Send enquiry</button>
+        <span class="f-status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
     <p class="contact-note">If you're looking for a visual identity that elevates your brand through atmosphere, storytelling and refined food imagery, I'd be happy to collaborate.</p>
   </section>
 
@@ -539,6 +575,33 @@
   lb.addEventListener('touchend', (e) => {
     if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
     if (Math.abs(dx) > 50) openAt(k + (dx < 0 ? 1 : -1));
+  });
+
+  // Enquiry form: sent to Roberto's inbox through FormSubmit
+  const form = document.getElementById('enquiry');
+  const fStatus = form.querySelector('.f-status');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    if (fd.get('_honey')) return;
+    let ok = true;
+    form.querySelectorAll('[required]').forEach((el) => { const bad = !el.value.trim() || (el.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim())); el.classList.toggle('bad', bad); if (bad) ok = false; });
+    if (!ok) { fStatus.textContent = 'Please add your name, a valid email and a short message.'; return; }
+    const data = Object.fromEntries(fd.entries());
+    delete data._honey;
+    data._subject = 'Richiesta dal sito robertosatta.com – ' + (data.name || '') + (data.company ? ' (' + data.company + ')' : '');
+    data._template = 'table';
+    data._captcha = 'false';
+    data._replyto = data.email;
+    const btn = form.querySelector('button'); btn.disabled = true; fStatus.textContent = 'Sending…';
+    try {
+      const r = await fetch('https://formsubmit.co/ajax/robertosatta01@gmail.com', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || String(j.success) === 'false') throw new Error(j.message || r.status);
+      form.reset(); fStatus.textContent = 'Thank you. Your message has arrived, I\u2019ll get back to you soon.';
+    } catch (err) {
+      fStatus.innerHTML = 'Something went wrong. Please write to me at <a href="mailto:robertosatta01@gmail.com">robertosatta01@gmail.com</a>.';
+    } finally { btn.disabled = false; }
   });
 
   document.querySelectorAll('.copy').forEach((btn) => {
