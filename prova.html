@@ -99,9 +99,12 @@
   @media (hover: hover) { .tile:hover img { transform: scale(1.04); } }
 
   /* Work: natural proportions, any new photo fits */
-  .masonry { columns: 3; column-gap: clamp(10px, 1.4vw, 18px); }
-  .masonry .tile { aspect-ratio: auto; break-inside: avoid; margin-bottom: clamp(10px, 1.4vw, 18px); }
-  .masonry .tile img { height: auto; }
+  .masonry { --row: 360px; --g: clamp(10px, 1.4vw, 18px); display: flex; flex-wrap: wrap; gap: var(--g); }
+  .masonry::after { content: ""; flex: 999 1 0; margin-left: calc(-1 * var(--g)); }
+  .masonry .tile { flex: var(--r, .667) 1 calc(var(--r, .667) * var(--row)); margin: 0; }
+  .masonry .tile img { width: 100%; height: auto; }
+  #work-light { --row: 430px; }
+  #work-light::after { display: none; }
 
 
   /* From artificial to natural light: colours follow the scroll */
@@ -220,7 +223,7 @@
     .hero-meta { align-items: flex-start; }
     .hero-caption { text-align: left; }
     .contact-row { grid-template-columns: 1fr; }
-    .masonry { columns: 2; }
+    .masonry, #work-light { --row: 200px; }
     .featured { grid-template-columns: 1fr; gap: 36px; }
   }
   @media (max-width: 560px) {
@@ -318,9 +321,9 @@
         <h3>Krug × Fuoco Sacro</h3>
         <p><b>Sardinia · 1 Michelin star.</b> Editorial photography for Krug, created at Fuoco Sacro.</p>
       </div>
-      <div class="expand"><div class="expand-pin"><figure class="tile expand-frame"><img src="foto/krug-rose.jpg" alt="Krug Rosé bottle with glasses and plated dishes under glass pendant lights" loading="lazy"></figure></div></div>
-      <div class="row-1">
+      <div class="row-2">
         <figure class="tile"><img loading="lazy" src="foto/krug.jpg" alt="Krug bottle with two glasses and a lobster dish against a textured wall"></figure>
+        <figure class="tile"><img loading="lazy" src="foto/krug-rose.jpg" alt="Krug Rosé bottle with glasses and plated dishes under glass pendant lights"></figure>
       </div>
     </div>
 
@@ -522,7 +525,6 @@
     ['fuoco-sacro-cucina.jpg', 'Fuoco Sacro · Kitchen', 'Black and white: chefs at work behind the pass', 'dark'],
     ['wild-turkey.jpg', 'Spirits', 'Wild Turkey Rye bottle and a cocktail with a leaf on a black table', 'dark'],
     ['cocktail-coppa.jpg', 'Mixology', 'Peach-coloured cocktail in a coupe against warm bokeh', 'dark'],
-    ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board', 'dark'],
     ['cucina-mani.jpg', 'Kitchen reportage', 'Tattooed hands of a chef cutting green beans', 'dark'],
     ['drink-ambra.jpg', 'Mixology', 'Amber cocktail with a green leaf on ice', 'dark'],
     ['pizza-sedia.jpg', 'Casual dining', 'Pizza on a dark table next to a wooden chair', 'dark'],
@@ -535,11 +537,13 @@
     ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait', 'light'],
     ['champagne-tower.jpg', 'Champagne', 'A champagne tower seen from below against a pale sky', 'light'],
     ['fuoco-sacro-schiuma.jpg', 'Fuoco Sacro', 'Close-up of red cocktail foam in daylight', 'light'],
+    ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board', 'light'],
   ];
   WORK.forEach(([file, cap, alt, light]) => {
     const grid = document.getElementById(light === 'light' ? 'work-light' : 'work-dark');
     const f = document.createElement('figure'); f.className = 'tile reveal';
     const i = document.createElement('img'); i.src = 'foto/' + file; i.alt = alt; i.loading = 'lazy';
+    i.addEventListener('load', () => f.style.setProperty('--r', (i.naturalWidth / i.naturalHeight).toFixed(4)));
     const c = document.createElement('figcaption'); c.textContent = cap;
     f.append(i, c); grid.append(f);
   });
