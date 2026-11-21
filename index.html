@@ -691,7 +691,7 @@
     data._replyto = data.email;
     const btn = form.querySelector('button'); btn.disabled = true; fStatus.textContent = 'Sending…';
     try {
-      const r = await fetch('https://formsubmit.co/ajax/robertosatta01@gmail.com', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const r = await fetch('https://formsubmit.co/ajax/b62f95879cfa3c4775eb34eacf173bf4', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || String(j.success) === 'false') throw new Error(j.message || r.status);
       form.reset(); fStatus.textContent = 'Thank you. Your message has arrived, I\u2019ll get back to you soon.';
