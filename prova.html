@@ -331,9 +331,9 @@
         <p>Editorial photography for Krug, also featured in the official Fuoco Sacro book.</p>
       </article>
       <article class="feat reveal">
-        <figure class="tile"><img loading="lazy" src="foto/drink-ritratto.jpg" alt="Woman holding a red drink, motion-blurred portrait in a dark bar" loading="lazy"></figure>
+        <figure class="tile"><img loading="lazy" src="foto/connaught-martini.jpg" alt="Martini on a bar table caught in a shaft of daylight"></figure>
         <h3>The Connaught · Soho House <span>London · Berlin</span></h3>
-        <p>Luxury hospitality: rooms, restaurants and bars, shot quietly around the service.</p>
+        <p>Luxury hospitality and bar photography in London and Berlin.</p>
       </article>
     </div>
     <details class="all">
@@ -466,11 +466,15 @@
 <script>
   // Work gallery: to add a photo, put the file in foto/ and add one line here (file, caption, description, 'dark' or 'light').
   const WORK = [
+    ['twice-shy.jpg', 'Twice Shy · London', 'Bartender stirring a cocktail behind the bar, light trails around him', 'dark'],
     ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table', 'dark'],
-    ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait in a dark bar', 'light'],
+    ['sensus.jpg', 'Sensus · Cagliari', 'Red drink in a tall glass, lit from the side against black', 'dark'],
     ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood', 'dark'],
+    ['connaught-nero.jpg', 'The Connaught · London', 'Black drink in a fluted glass on a white background', 'dark'],
     ['drink-verde.jpg', 'Mixology', 'Green cocktail lit in darkness on a black tray', 'dark'],
+    ['fuoco-sacro-cucina.jpg', 'Fuoco Sacro · Kitchen', 'Black and white: chefs at work behind the pass', 'dark'],
     ['wild-turkey.jpg', 'Spirits', 'Wild Turkey Rye bottle and a cocktail with a leaf on a black table', 'dark'],
+    ['cocktail-coppa.jpg', 'Mixology', 'Peach-coloured cocktail in a coupe against warm bokeh', 'dark'],
     ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board', 'dark'],
     ['cucina-mani.jpg', 'Kitchen reportage', 'Tattooed hands of a chef cutting green beans', 'dark'],
     ['drink-ambra.jpg', 'Mixology', 'Amber cocktail with a green leaf on ice', 'dark'],
@@ -479,6 +483,11 @@
     ['pane.jpg', 'Personal work', 'Macro of a sourdough crust and crumb', 'dark'],
     ['spaghetti.jpg', 'Personal work', 'Dry spaghetti fanned out from above on a cream background', 'dark'],
     ['gelato.jpg', 'Personal work', 'Hand holding a chocolate-coated ice cream bar against black', 'dark'],
+    ['fuoco-sacro-finestra.jpg', 'Fuoco Sacro', 'Red cocktail on a wooden table, curtain and leaf shadows in morning sun', 'light'],
+    ['connaught-martini.jpg', 'The Connaught · London', 'Martini on a bar table caught in a shaft of daylight', 'light'],
+    ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait', 'light'],
+    ['champagne-tower.jpg', 'Champagne', 'A champagne tower seen from below against a pale sky', 'light'],
+    ['fuoco-sacro-schiuma.jpg', 'Fuoco Sacro', 'Close-up of red cocktail foam in daylight', 'light'],
   ];
   WORK.forEach(([file, cap, alt, light]) => {
     const grid = document.getElementById(light === 'light' ? 'work-light' : 'work-dark');
