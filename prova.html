@@ -271,6 +271,16 @@
       </div>
     </div>
 
+    <div class="project" id="slurp">
+      <div class="project-text">
+        <h3>Slurp</h3>
+        <p><b>Copenhagen.</b> Food photography for Nordic casual fine dining, from the noodle machine to the bowl.</p>
+      </div>
+      <div class="row-2">
+        <figure class="tile"><img loading="lazy" src="foto/slurp-pasta.jpg" alt="Fresh noodles hanging from a machine under red light"></figure>
+        <figure class="tile"><img loading="lazy" src="foto/slurp-matasse.jpg" alt="Nests of fresh noodles"></figure>
+      </div>
+    </div>
     <div class="masonry" id="work-dark"></div>
   </section>
 
@@ -288,16 +298,6 @@
       <p>Daylit tables, open kitchens, raw textures. The story is already there.</p>
     </div>
 
-    <div class="project" id="slurp">
-      <div class="project-text">
-        <h3>Slurp</h3>
-        <p><b>Copenhagen.</b> Natural-light food photography for Nordic casual fine dining, from the noodle machine to the bowl.</p>
-      </div>
-      <div class="row-2">
-        <figure class="tile"><img loading="lazy" src="foto/slurp-pasta.jpg" alt="Fresh noodles hanging from a machine under red light"></figure>
-        <figure class="tile"><img loading="lazy" src="foto/slurp-matasse.jpg" alt="Nests of fresh noodles"></figure>
-      </div>
-    </div>
     <div class="masonry" id="work-light"></div>
   </section>
 
@@ -430,18 +430,18 @@
 <script>
   // Work gallery: to add a photo, put the file in foto/ and add one line here (file, caption, description, 'dark' or 'light').
   const WORK = [
-    ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table', 'light'],
+    ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table', 'dark'],
     ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait in a dark bar', 'dark'],
-    ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood', 'light'],
+    ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood', 'dark'],
     ['drink-verde.jpg', 'Mixology', 'Green cocktail lit in darkness on a black tray', 'dark'],
     ['wild-turkey.jpg', 'Spirits', 'Wild Turkey Rye bottle and a cocktail with a leaf on a black table', 'dark'],
-    ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board', 'light'],
-    ['cucina-mani.jpg', 'Kitchen reportage', 'Tattooed hands of a chef cutting green beans', 'light'],
+    ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board', 'dark'],
+    ['cucina-mani.jpg', 'Kitchen reportage', 'Tattooed hands of a chef cutting green beans', 'dark'],
     ['drink-ambra.jpg', 'Mixology', 'Amber cocktail with a green leaf on ice', 'dark'],
     ['pizza-sedia.jpg', 'Casual dining', 'Pizza on a dark table next to a wooden chair', 'dark'],
     ['uva.jpg', 'Personal work', 'Bunch of red grapes dripping juice against a dark background', 'dark'],
-    ['pane.jpg', 'Personal work', 'Macro of a sourdough crust and crumb', 'light'],
-    ['spaghetti.jpg', 'Personal work', 'Dry spaghetti fanned out from above on a cream background', 'light'],
+    ['pane.jpg', 'Personal work', 'Macro of a sourdough crust and crumb', 'dark'],
+    ['spaghetti.jpg', 'Personal work', 'Dry spaghetti fanned out from above on a cream background', 'dark'],
     ['gelato.jpg', 'Personal work', 'Hand holding a chocolate-coated ice cream bar against black', 'dark'],
   ];
   WORK.forEach(([file, cap, alt, light]) => {
@@ -454,6 +454,9 @@
 
   document.querySelectorAll('.project .tile, .row-2, .row-3').forEach((el) => el.classList.add('reveal'));
 
+  // Until there are natural-light photos, keep the dawn and the light section hidden
+  if (!document.querySelector('#work-light .tile')) { document.getElementById('dawn').hidden = true; document.getElementById('natural').hidden = true; }
+
   // Light shift: dark until the dawn, light through the natural section, dark again at the contacts
   const DARK = { ink: [7, 7, 7], wall: [15, 15, 15], type: [216, 214, 211], soft: [154, 151, 147], line: [38, 37, 36] };
   const LIGHT = { ink: [242, 238, 232], wall: [229, 224, 216], type: [24, 23, 22], soft: [108, 104, 99], line: [214, 209, 202] };
@@ -463,6 +466,7 @@
   let ticking = false;
   function paint() {
     ticking = false;
+    if (dawn.hidden) return;
     const vh = innerHeight, d = dawn.getBoundingClientRect(), n = night.getBoundingClientRect();
     const up = smooth(clamp((vh * 0.85 - d.top) / (d.height * 0.8)));
     const down = smooth(clamp((vh - n.top) / (vh * 0.6)));
