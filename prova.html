@@ -27,6 +27,7 @@
   .display { font-family: var(--font); font-weight: 800; text-transform: uppercase; letter-spacing: -.055em; line-height: .86; margin: 0; color: var(--type); }
   section { padding-block: clamp(56px, 9vw, 120px); border-top: 1px solid var(--line); }
   .sec-head { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; align-items: end; margin-bottom: clamp(32px, 5vw, 64px); }
+  .sec-head .label { display: block; margin-bottom: 16px; }
   .sec-head h2 { font-size: clamp(34px, 8vw, 116px); overflow-wrap: anywhere; }
   .sec-head p { margin: 0; max-width: 46ch; color: var(--soft); }
 
@@ -58,7 +59,7 @@
   .notice p { margin: 0; font-size: 15px; }
   .notice b { font-weight: 500; }
   .btn { display: inline-block; font: inherit; font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--ink); background: var(--type); padding: 12px 18px; border: 0; cursor: pointer; transition: background .2s; }
-  .btn:hover { background: #fff; }
+  .btn:hover { opacity: .86; }
   .btn.ghost { background: transparent; color: var(--type); border: 1px solid var(--line); }
   .btn.ghost:hover { border-color: var(--type); }
 
@@ -91,6 +92,18 @@
   .masonry { columns: 3; column-gap: clamp(10px, 1.4vw, 18px); }
   .masonry .tile { aspect-ratio: auto; break-inside: avoid; margin-bottom: clamp(10px, 1.4vw, 18px); }
   .masonry .tile img { height: auto; }
+
+
+  /* From artificial to natural light: colours follow the scroll */
+  html, body { transition: none; }
+  body { background: var(--ink); }
+  .tile, .portrait, .feat .tile { background: var(--wall); }
+  .dawn { position: relative; min-height: 120svh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 22px; padding: 80px 0; }
+  .dawn::before { content: ""; position: absolute; left: 50%; top: 0; width: 140vw; height: 100%; transform: translateX(-50%); pointer-events: none;
+    background: radial-gradient(ellipse 60% 55% at 50% 30%, rgba(255, 236, 205, calc(var(--glow, 0) * .55)), transparent 70%); }
+  .dawn h2 { position: relative; font-size: clamp(48px, 11vw, 160px); }
+  .dawn p { position: relative; margin: 0; color: var(--soft); font-size: clamp(16px, 1.6vw, 20px); }
+  #natural { border-top: 0; }
 
   /* Reveal on scroll */
   .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
@@ -204,7 +217,7 @@
       <div class="hero-meta">
         <div class="dots" role="group" aria-label="Choose photograph"></div>
         <span class="hero-caption" id="hero-cap">Mixology</span>
-        <a class="scroll-cue" href="#projects">Scroll ↓</a>
+        <a class="scroll-cue" href="#artificial">Scroll ↓</a>
       </div>
     </div>
   </div>
@@ -226,10 +239,13 @@
     </div>
   </section>
 
-  <section id="projects" aria-labelledby="projects-title">
+  <section id="artificial" aria-labelledby="art-title">
     <div class="sec-head">
-      <h2 class="display" id="projects-title">Selected<br>projects</h2>
-      <p>Visual storytelling shot on location, adapted to each kitchen, bar and culinary culture.</p>
+      <div>
+        <span class="label">Artificial light</span>
+        <h2 class="display" id="art-title">Where darkness<br>tells the story</h2>
+      </div>
+      <p>Controlled light, chiaroscuro and cinematic mood. Every shadow is a choice.</p>
     </div>
 
     <div class="project" id="geranium">
@@ -255,6 +271,23 @@
       </div>
     </div>
 
+    <div class="masonry" id="work-dark"></div>
+  </section>
+
+  <div class="dawn" id="dawn" aria-hidden="false">
+    <h2 class="display reveal">Then the<br>light comes in.</h2>
+    <p class="reveal">Same eye. Different atmosphere.</p>
+  </div>
+
+  <section id="natural" aria-labelledby="nat-title">
+    <div class="sec-head">
+      <div>
+        <span class="label">Natural light</span>
+        <h2 class="display" id="nat-title">Where the place<br>speaks for itself</h2>
+      </div>
+      <p>Daylit tables, open kitchens, raw textures. The story is already there.</p>
+    </div>
+
     <div class="project" id="slurp">
       <div class="project-text">
         <h3>Slurp</h3>
@@ -265,15 +298,7 @@
         <figure class="tile"><img loading="lazy" src="foto/slurp-matasse.jpg" alt="Nests of fresh noodles"></figure>
       </div>
     </div>
-  </section>
-
-
-  <section id="work" aria-labelledby="work-title">
-    <div class="sec-head">
-      <h2 class="display" id="work-title">Work</h2>
-      <p>Texture, mood and identity. Natural light where the place gives it, controlled light where the story needs it.</p>
-    </div>
-    <div class="masonry" id="work-grid"></div>
+    <div class="masonry" id="work-light"></div>
   </section>
 
   <section id="collaborations" aria-labelledby="collab-title">
@@ -403,24 +428,24 @@
 </div>
 
 <script>
-  // Work gallery: to add a photo, put the file in foto/ and add one line here (file, caption, description).
+  // Work gallery: to add a photo, put the file in foto/ and add one line here (file, caption, description, 'dark' or 'light').
   const WORK = [
-    ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table'],
-    ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait in a dark bar'],
-    ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood'],
-    ['drink-verde.jpg', 'Mixology', 'Green cocktail lit in darkness on a black tray'],
-    ['wild-turkey.jpg', 'Spirits', 'Wild Turkey Rye bottle and a cocktail with a leaf on a black table'],
-    ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board'],
-    ['cucina-mani.jpg', 'Kitchen reportage', 'Tattooed hands of a chef cutting green beans'],
-    ['drink-ambra.jpg', 'Mixology', 'Amber cocktail with a green leaf on ice'],
-    ['pizza-sedia.jpg', 'Casual dining', 'Pizza on a dark table next to a wooden chair'],
-    ['uva.jpg', 'Personal work', 'Bunch of red grapes dripping juice against a dark background'],
-    ['pane.jpg', 'Personal work', 'Macro of a sourdough crust and crumb'],
-    ['spaghetti.jpg', 'Personal work', 'Dry spaghetti fanned out from above on a cream background'],
-    ['gelato.jpg', 'Personal work', 'Hand holding a chocolate-coated ice cream bar against black'],
+    ['salsa.jpg', 'Fine dining', 'Sauce being poured into a white bowl at the table', 'light'],
+    ['drink-ritratto.jpg', 'Mixology', 'Woman holding a red drink, motion-blurred portrait in a dark bar', 'dark'],
+    ['piatto-blu.jpg', 'Fine dining', 'Raw fish dish in a blue flower-shaped bowl on dark wood', 'light'],
+    ['drink-verde.jpg', 'Mixology', 'Green cocktail lit in darkness on a black tray', 'dark'],
+    ['wild-turkey.jpg', 'Spirits', 'Wild Turkey Rye bottle and a cocktail with a leaf on a black table', 'dark'],
+    ['piatto-legno.jpg', 'Restaurant', 'Grilled fish with greens on a white plate over a wooden board', 'light'],
+    ['cucina-mani.jpg', 'Kitchen reportage', 'Tattooed hands of a chef cutting green beans', 'light'],
+    ['drink-ambra.jpg', 'Mixology', 'Amber cocktail with a green leaf on ice', 'dark'],
+    ['pizza-sedia.jpg', 'Casual dining', 'Pizza on a dark table next to a wooden chair', 'dark'],
+    ['uva.jpg', 'Personal work', 'Bunch of red grapes dripping juice against a dark background', 'dark'],
+    ['pane.jpg', 'Personal work', 'Macro of a sourdough crust and crumb', 'light'],
+    ['spaghetti.jpg', 'Personal work', 'Dry spaghetti fanned out from above on a cream background', 'light'],
+    ['gelato.jpg', 'Personal work', 'Hand holding a chocolate-coated ice cream bar against black', 'dark'],
   ];
-  const grid = document.getElementById('work-grid');
-  WORK.forEach(([file, cap, alt]) => {
+  WORK.forEach(([file, cap, alt, light]) => {
+    const grid = document.getElementById(light === 'light' ? 'work-light' : 'work-dark');
     const f = document.createElement('figure'); f.className = 'tile reveal';
     const i = document.createElement('img'); i.src = 'foto/' + file; i.alt = alt; i.loading = 'lazy';
     const c = document.createElement('figcaption'); c.textContent = cap;
@@ -428,6 +453,27 @@
   });
 
   document.querySelectorAll('.project .tile, .row-2, .row-3').forEach((el) => el.classList.add('reveal'));
+
+  // Light shift: dark until the dawn, light through the natural section, dark again at the contacts
+  const DARK = { ink: [7, 7, 7], wall: [15, 15, 15], type: [216, 214, 211], soft: [154, 151, 147], line: [38, 37, 36] };
+  const LIGHT = { ink: [242, 238, 232], wall: [229, 224, 216], type: [24, 23, 22], soft: [108, 104, 99], line: [214, 209, 202] };
+  const root = document.documentElement, dawn = document.getElementById('dawn'), night = document.getElementById('contact');
+  const clamp = (v) => Math.max(0, Math.min(1, v));
+  const smooth = (v) => v * v * (3 - 2 * v);
+  let ticking = false;
+  function paint() {
+    ticking = false;
+    const vh = innerHeight, d = dawn.getBoundingClientRect(), n = night.getBoundingClientRect();
+    const up = smooth(clamp((vh * 0.85 - d.top) / (d.height * 0.8)));
+    const down = smooth(clamp((vh - n.top) / (vh * 0.6)));
+    const t = up * (1 - down);
+    for (const k in DARK) root.style.setProperty('--' + k, 'rgb(' + DARK[k].map((c, i) => Math.round(c + (LIGHT[k][i] - c) * t)).join(',') + ')');
+    root.style.setProperty('--glow', (Math.sin(Math.PI * clamp((vh - d.top) / (d.height + vh))) * (1 - down)).toFixed(3));
+    root.style.colorScheme = t > 0.5 ? 'light' : 'dark';
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(paint); } }, { passive: true });
+  addEventListener('resize', paint);
+  paint();
 
   // Hero slideshow
   const slides = [...document.querySelectorAll('.slide')];
